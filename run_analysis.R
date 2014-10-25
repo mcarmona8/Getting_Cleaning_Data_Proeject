@@ -1,6 +1,6 @@
 library(dplyr)
 library(tidyr)
-
+#Reading Data
 feat<-read.table("./UCI HAR Dataset/features.txt")
 x<-read.table("./UCI HAR Dataset/train/subject_train.txt")
 x_t<-read.table("./UCI HAR Dataset/train/X_train.txt")
@@ -12,6 +12,7 @@ s_test<-read.table("./UCI HAR Dataset/test/subject_test.txt")
 s_train<-read.table("./UCI HAR Dataset/train/subject_train.txt")
 sub_tot<-unique(merge(s_train,s_test,all=T)) #Total of subjects
 
+#Manipulating Data
 dat_train<-data.frame(Subject=s_train$V1,Activity=y_t$V1,TYPE="Train",x_t)
 dat_test<-data.frame(Subject=s_test$V1,Activity=y_tst$V1,TYPE="Test",x_tst)
 mdat<-merge(dat_train,dat_test,all=T)
@@ -51,7 +52,7 @@ for (i in 4:length(col_names)){
 colnames(mdat)<-col_n
 
 
-#sort by 
+#Sort Data and getting averages
 for (e in 1:nrow(sub_tot)){
 for (i in 4:length(col_n)){
 by_s<-data.frame(Act=mdat$Activity,Sub=mdat$Subject,V1=mdat[,i])
@@ -78,4 +79,6 @@ for (i in 4:length(col_names)){
 }
 
 colnames(Avg_Summ)<-col_n
+
+#writing down files
 write.table(Avg_Summ,file="Step5.txt",row.name=F)
